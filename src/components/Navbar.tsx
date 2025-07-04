@@ -111,6 +111,9 @@ const Navbar = () => {
             <Link to="/newsletters" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-800">
               Newsletters
             </Link>
+            <Link to="/newsletters" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-800">
+              Management
+            </Link>
           </div>
           <div className="pt-4 pb-3 border-t border-gray-700">
             {user ? <div className="px-2 space-y-1">
