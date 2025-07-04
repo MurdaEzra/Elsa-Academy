@@ -17,9 +17,18 @@ const Admissions = () => {
           <div className="mt-10">
             <div className="prose prose-lg mx-auto">
               <p>
-                We welcome applications from students seeking quality education
-                in a nurturing environment.
+                We shall conduct Interviews for new students from play group(BC) to Grade 8.</p>
+               <p> Requirements:
               </p>
+              <ul>
+                <li>1.Original birth certificate/ photocopy.</li>
+                <li>2.Former school file and assessment report.</li>
+                <li>3.Interview Fee of Ksh.500.</li>
+                <li>4.Ready to pay School Fees.</li>
+                <li>5.Upon admission some 2025 term 1 Fee should be remitted and BEGINNERS CLASS 
+                  should remit all 2025 term 1 Fee because of limited vacancies.
+                </li>
+              </ul>
             </div>
           </div>
         </div>

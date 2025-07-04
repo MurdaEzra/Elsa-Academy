@@ -1,10 +1,20 @@
 import React, { useEffect, useState, createContext, useContext } from 'react';
-import supabase from '../components/supabaseClient'; // Adjust path if needed
-const AuthContext = createContext(null);
+import supabase from '../components/supabaseClient.ts'; // Adjust path if needed
+
+type AuthContextType = {
+  user: import('@supabase/supabase-js').User | null;
+  loading: boolean;
+  login: ({ email, password }: { email: string; password: string }) => Promise<{ success: boolean; error?: string; user?: import('@supabase/supabase-js').User }>;
+  logout: () => Promise<void>;
+  isAuthenticated: boolean;
+};
+
+const AuthContext = createContext<AuthContextType | null>(null);
+
 export const AuthProvider = ({
   children
 }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<import('@supabase/supabase-js').User | null>(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     // Listen for auth state changes
@@ -44,10 +54,19 @@ export const AuthProvider = ({
         error: error.message
       };
     }
-    setUser(data.user);
+    let user = data.user;
+    // Fetch role from profiles table
+    const {
+      data: profile,
+      error: profileError
+    } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+    if (profile && profile.role) {
+      user = { ...user, role: profile.role };
+    }
+    setUser(user);
     return {
       success: true,
-      user: data.user
+      user
     };
   };
   const logout = async () => {

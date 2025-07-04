@@ -108,7 +108,12 @@ const Footer = () => {
           <div className="mt-4 md:mt-0">
             <ul className="flex space-x-6">
               <li>
-                <a href="#" className="text-gray-400 hover:text-white text-sm">
+                <a
+                  href="/src/Privacy%20Policy.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-white text-sm"
+                >
                   Privacy Policy
                 </a>
               </li>

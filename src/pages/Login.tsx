@@ -37,14 +37,13 @@ const Login = () => {
     setLoading(true);
     setError('');
     try {
-      // Only pass email and password to login, as Supabase does not use username/role for login
       const result = await login({
         email: formData.email,
         password: formData.password
       });
       if (result.success) {
-        // Use role from formData or result.user if available
-        const role = result.user.role || formData.role || 'student';
+        // Use the role from the returned user object
+        const role = result.user?.role || 'student';
         const dashboardPath = `/${role}-dashboard`;
         navigate(dashboardPath);
       } else {
@@ -199,12 +198,7 @@ const Login = () => {
                   {loading ? 'Signing in...' : 'Sign in'}
                 </button>
               </div>
-              {/* Demo credentials */}
-              <div className="text-center text-sm text-gray-500 mt-4">
-                <p>
-                  For admin demo: username "admin", email "admin@example.com", password "password123"
-                </p>
-              </div>
+              
             </form>
           </div>
         </div>

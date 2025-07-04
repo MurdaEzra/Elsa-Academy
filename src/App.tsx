@@ -41,15 +41,9 @@ export function App() {
           <Route path="/fee-structure" element={<FeeStructure />} />
           <Route path="/newsletters" element={<Newsletters />} />
           {/* Protected routes */}
-          <Route path="/student-dashboard/*" element={<ProtectedRoute allowedRoles={['student']}>
-                <StudentDashboard />
-              </ProtectedRoute>} />
-          <Route path="/teacher-dashboard/*" element={<ProtectedRoute allowedRoles={['teacher']}>
-                <TeacherDashboard />
-              </ProtectedRoute>} />
-          <Route path="/admin-dashboard/*" element={<ProtectedRoute allowedRoles={['admin']}>
-                <AdminDashboard />
-              </ProtectedRoute>} />
+          <Route path="/student-dashboard/*" element={<StudentDashboard />} />
+          <Route path="/teacher-dashboard/*" element={<TeacherDashboard />} />
+          <Route path="/admin-dashboard/*" element={<AdminDashboard />} />
           {/* 404 route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
