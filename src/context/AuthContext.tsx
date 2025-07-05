@@ -1,78 +1,94 @@
 import React, { useEffect, useState, createContext, useContext } from 'react';
-import supabase from '../components/supabaseClient.ts'; // Adjust path if needed
+import supabase from '../components/supabaseClient.ts';
+
+type ExtendedUser = import('@supabase/supabase-js').User & { role?: string };
 
 type AuthContextType = {
-  user: import('@supabase/supabase-js').User | null;
+  user: ExtendedUser | null;
   loading: boolean;
-  login: ({ email, password }: { email: string; password: string }) => Promise<{ success: boolean; error?: string; user?: import('@supabase/supabase-js').User }>;
+  login: ({
+    email,
+    password
+  }: {
+    email: string;
+    password: string;
+  }) => Promise<{ success: boolean; error?: string; user?: ExtendedUser }>;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export const AuthProvider = ({
-  children
-}) => {
-  const [user, setUser] = useState<import('@supabase/supabase-js').User | null>(null);
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState<ExtendedUser | null>(null);
   const [loading, setLoading] = useState(true);
+
+  // Fetch role from profiles table
+  const fetchUserWithRole = async (baseUser: ExtendedUser | null) => {
+    if (!baseUser) {
+      setUser(null);
+      return;
+    }
+
+    const { data: profile, error } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', baseUser.id)
+      .single();
+
+    if (profile?.role) {
+      setUser({ ...baseUser, role: profile.role });
+    } else {
+      setUser(baseUser); // fallback
+    }
+  };
+
   useEffect(() => {
+    // Initial session check
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      fetchUserWithRole(session?.user ?? null);
+      setLoading(false);
+    });
+
     // Listen for auth state changes
-    const {
-      data: listener
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      fetchUserWithRole(session?.user ?? null);
     });
-    // Check initial session
-    supabase.auth.getSession().then(({
-      data: {
-        session
-      }
-    }) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
+
     return () => {
       listener.subscription.unsubscribe();
     };
   }, []);
-  const login = async ({
-    email,
-    password
-  }) => {
-    const {
-      data,
-      error
-    } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    });
+
+  const login = async ({ email, password }) => {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
     if (error) {
-      return {
-        success: false,
-        error: error.message
-      };
+      return { success: false, error: error.message };
     }
-    let user = data.user;
-    // Fetch role from profiles table
-    const {
-      data: profile,
-      error: profileError
-    } = await supabase.from('profiles').select('role').eq('id', user.id).single();
-    if (profile && profile.role) {
-      user = { ...user, role: profile.role };
+
+    const baseUser = data.user;
+
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', baseUser.id)
+      .single();
+
+    let finalUser = baseUser;
+    if (profile?.role) {
+      finalUser = { ...baseUser, role: profile.role };
     }
-    setUser(user);
-    return {
-      success: true,
-      user
-    };
+
+    setUser(finalUser);
+    return { success: true, user: finalUser };
   };
+
   const logout = async () => {
     await supabase.auth.signOut();
     setUser(null);
   };
+
   const value = {
     user,
     loading,
@@ -80,8 +96,10 @@ export const AuthProvider = ({
     logout,
     isAuthenticated: !!user
   };
+
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === null) {
