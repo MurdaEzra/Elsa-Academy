@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Phone, Mail, MapPin } from 'lucide-react';
+import { Phone, Mail, MapPin, Underline } from 'lucide-react';
 const Footer = () => {
   return <footer className="bg-black text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -103,9 +103,11 @@ const Footer = () => {
         <div className="mt-8 pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between">
           <p className="text-gray-400 text-sm">
             &copy; {new Date().getFullYear()} Elsa Preparatory And Junior
-            Academy. All rights reserved. Designed by <a href="https://ezra-nyamwange-portfolio.lovable.app/" 
+            Academy. All rights reserved. Designed by <a href="https://ezra-nyamwange-portfolio.vercel.app" 
+            style={{textDecoration : 'underline'}}
              target="_blank" 
-            rel="noopener noreferrer">
+            rel="noopener noreferrer"
+             className="text-gray-400 hover:text-white text-sm">
             Nyamwange</a>
           </p>
           <div className="mt-4 md:mt-0">
