@@ -105,6 +105,7 @@ const Footer = () => {
             &copy; {new Date().getFullYear()} Elsa Preparatory And Junior
             Academy. All rights reserved. Designed by <a href="https://ezra-nyamwange-portfolio.lovable.app/" 
              target="_blank" 
+            style={{textDecoration: 'underline'}}                                            
             rel="noopener noreferrer">
             Nyamwange</a>
           </p>
