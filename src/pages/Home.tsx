@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { BookOpen, Users, Award, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion'; 
+import axios from 'axios';
 const Home = () => {
   return <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -13,9 +15,15 @@ const Home = () => {
           <div className="absolute inset-0 bg-black opacity-50" />
         </div>
         <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Elsa Preparatory And Junior Academy
-          </h1>
+         <motion.h1
+                 initial={{ opacity: 0, y: -30 }}
+                 animate={{ opacity: 1, y: 0 }}
+                 transition={{ duration: 1 }}
+                className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl"
+                 >
+                 Elsa Preparatory And Junior Academy
+                </motion.h1>
+
           <p className="mt-6 text-xl text-gray-300 max-w-3xl">
             Nurturing excellence and building a strong educational foundation
             for the future leaders of tomorrow.
@@ -58,7 +66,12 @@ const Home = () => {
             name: 'JSS',
             description: 'Junior Secondary School for grades 7-9, offering comprehensive education and specialization.',
             image: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
-          }].map(division => <div key={division.name} className="flex flex-col rounded-lg shadow-lg overflow-hidden">
+          }].map(division => 
+          <div
+               key={division.name}
+               className="flex flex-col rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-xl"
+               >
+
                 <div className="flex-shrink-0">
                   <img className="h-48 w-full object-cover" src={division.image} alt={division.name} />
                 </div>

@@ -12,6 +12,7 @@ import StudentDashboard from './pages/dashboard/StudentDashboard';
 import TeacherDashboard from './pages/dashboard/TeacherDashboard';
 import AdminDashboard from './pages/dashboard/AdminDashboard';
 import NotFound from './pages/NotFound';
+import Management from './pages/Management';
 
 // Enhanced ProtectedRoute component
 const ProtectedRoute = ({
@@ -68,6 +69,7 @@ export function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/fee-structure" element={<FeeStructure />} />
           <Route path="/newsletters" element={<Newsletters />} />
+          <Route path="/Management" element={<Management/>}/>
           
           {/* Dashboard entry point */}
           <Route path="/dashboard" element={
