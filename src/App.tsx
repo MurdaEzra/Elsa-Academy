@@ -68,13 +68,16 @@ export function App() {
           <Route path="/fee-structure" element={<FeeStructure />} />
           <Route path="/newsletters" element={<Newsletters />} />
           <Route path="/Management" element={<Management/>}/>
-          
+
+
           {/* Dashboard entry point */}
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <RoleDashboard />
             </ProtectedRoute>
           } />
+          
+        
           
           {/* Protected role-specific dashboards */}
           <Route path="/student-dashboard/*" element={

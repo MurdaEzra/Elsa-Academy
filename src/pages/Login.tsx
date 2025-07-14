@@ -39,8 +39,9 @@ const LoginPage: React.FC = () => {
       setIsLoading(false);
     }
   };
+  
   return <div className="flex flex-col min-h-screen justify-center items-center ">
-   <Navbar />
+   
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
         <div className="mb-8 text-center">
           <Logo size="md" />
@@ -106,7 +107,7 @@ const LoginPage: React.FC = () => {
           </p>
         </div>
       </div>
-    <Footer /> 
+    
     </div>;
   
 };
