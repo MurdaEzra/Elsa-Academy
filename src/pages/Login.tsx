@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { EyeIcon, EyeOffIcon, LockIcon, MailIcon } from 'lucide-react';
+import Logo from '../components/Logo';
 import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { EyeIcon, EyeOffIcon } from 'lucide-react';
-
-const Login: React.FC = () => {
+const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -39,85 +39,75 @@ const Login: React.FC = () => {
       setIsLoading(false);
     }
   };
-
-  return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
-      <Navbar />
-      <div className="flex-grow flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8">
-          <div className="text-center">
-            <h2 className="mt-6 text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
-            <p className="mt-2 text-sm text-gray-600">Access the Elsa Academy portal</p>
-          </div>
-          <div className="mt-8 bg-white py-8 px-4 shadow rounded-lg sm:px-10">
-            <form className="space-y-6" onSubmit={handleSubmit}>
-              {/* Email */}
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  Email
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm"
-                />
+  return <div className="flex flex-col min-h-screen justify-center items-center ">
+   <Navbar />
+      <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
+        <div className="mb-8 text-center">
+          <Logo size="md" />
+          <h2 className="mt-6 text-2xl font-bold text-gray-900">
+            Welcome back
+          </h2>
+          <p className="mt-2 text-sm text-gray-600">
+            Login to access your account
+          </p>
+        </div>
+        {error && <div className="mb-4 p-3 bg-red-100 border border-red-200 text-red-700 rounded-md text-sm">
+            {error}
+          </div>}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              Email Address
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <MailIcon className="h-5 w-5 text-gray-400" />
               </div>
-
-              {/* Password */}
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                  Password
-                </label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm"
-                 /><button type="button" onClick={() => setShowPassword(!showPassword)}>
-                    {showPassword ? <EyeOffIcon className="h-5 w-5 text-gray-400" /> : <EyeIcon className="h-5 w-5 text-gray-400" />}
-                  </button>  
-                
-              </div>
-
-              {/* Error */}
-              {error && (
-                <div className="rounded-md bg-red-50 p-4">
-                  <p className="text-sm text-red-700">{error}</p>
-                </div>
-              )}
-
-              {/* Submit Button */}
-              <div>
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 ${
-                    isLoading ? 'opacity-70 cursor-not-allowed' : ''
-                  }`}
-                >
-                  {isLoading ? 'Signing in...' : 'Sign in'}
-                </button>
-              </div>
-            </form>
-            <div className="mt-6">
-              <p className="text-xs text-center text-gray-500">
-                The Student-Teacher LMS portal will open soon!!!!
-              </p>
-
+              <input id="email" name="email" type="email" autoComplete="email" required value={email} onChange={e => setEmail(e.target.value)} className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-amber-500 focus:border-amber-500" placeholder="your@email.com" />
             </div>
           </div>
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              Password
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <LockIcon className="h-5 w-5 text-gray-400" />
+              </div>
+              <input id="password" name="password" type={showPassword ? 'text' : 'password'} autoComplete="current-password" required value={password} onChange={e => setPassword(e.target.value)} className="appearance-none block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-amber-500 focus:border-amber-500" placeholder="••••••••" />
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                {showPassword ? <EyeOffIcon className="h-5 w-5 text-gray-400" /> : <EyeIcon className="h-5 w-5 text-gray-400" />}
+              </button>
+            </div>
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 text-amber-600 focus:ring-amber-500 border-gray-300 rounded" />
+              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                Remember me
+              </label>
+            </div>
+            <div className="text-sm">
+              <a href="{{ .ConfirmationURL }}" className="font-medium text-amber-600 hover:text-amber-500">
+                Forgot password?
+                
+              </a>
+            </div>
+          </div>
+          <div>
+            <button type="submit" disabled={isLoading} className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 ${isLoading ? 'opacity-75 cursor-not-allowed' : ''}`}>
+              {isLoading ? 'Signing in...' : 'Sign in'}
+            </button>
+          </div>
+        </form>
+        <div className="mt-6">
+          <p className="text-xs text-center text-gray-500">
+            The Student-Teacher LMS portal will open soon!!!!!!!!
+          </p>
         </div>
       </div>
-      <Footer />
-    </div>
-  );
+    <Footer /> 
+    </div>;
+  
 };
-
-export default Login;
+export default LoginPage;

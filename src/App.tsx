@@ -22,12 +22,10 @@ const ProtectedRoute = ({
   children: React.ReactNode;
   requiredRole?: string;
 }) => {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
   const location = useLocation();
 
-  if (loading) {
-    return <div>Loading authentication status...</div>;
-  }
+  
 
   if (!user) {
     return <Navigate to="/login" state={{ from: location }} replace />;

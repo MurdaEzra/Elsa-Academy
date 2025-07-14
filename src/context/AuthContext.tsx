@@ -6,7 +6,8 @@ import React, {
   useEffect,
 } from 'react';
 import supabase from './supabaseClient';
-import { Session, User as SupabaseUser } from '@supabase/supabase-js';
+import {User as SupabaseUser } from '@supabase/supabase-js';
+
 
 // Role type
 export type UserRole = 'student' | 'teacher' | 'admin';
@@ -25,6 +26,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   isAuthenticated: boolean;
+  
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -55,6 +57,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUser(profile);
         localStorage.setItem('user', JSON.stringify(profile));
       }
+      if (error) {
+        console.error('Error fetching session:', error);
+      }
     };
     getSession();
 
@@ -77,18 +82,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (email: string, password: string): Promise<boolean> => {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) return false;
-
     const profile = await fetchUserProfile(data.user);
     setUser(profile);
     localStorage.setItem('user', JSON.stringify(profile));
     return true;
   };
-
+   
   // 👇 Logout
   const logout = () => {
     supabase.auth.signOut();
     setUser(null);
     localStorage.removeItem('user');
+   
   };
 
   // Fetch profile data from Supabase (e.g., "profiles" table with name and role)
